@@ -10,19 +10,17 @@ const Navbar = () => {
   const [show, setShow] = useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
-  const handleLogout = async () => {
-    await axios
-      .get("http://localhost:5000/api/v1/user/patient/logout", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
-  };
+ const handleLogout = async () => {
+  try {
+    const { data } = await api.get("/api/v1/user/patient/logout");
+
+    toast.success(data.message);
+    setIsAuthenticated(false);
+
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Logout failed");
+  }
+};
 
   const navigateTo = useNavigate();
 
@@ -33,7 +31,7 @@ const Navbar = () => {
   return (
     <>
       <nav className={"container"}>
-        <img src="C:\Users\NOORJAHAN PP\Downloads\NR_logo_ultra_clear.png" alt="Noor hospital" className="logo" />
+        <img src="" alt="Noor hospital" className="logo" />
         <div className={show ? "navLinks showmenu" : "navLinks"}>
           <div className="links">
             <Link to={"/"} onClick={() => setShow(!show)}>

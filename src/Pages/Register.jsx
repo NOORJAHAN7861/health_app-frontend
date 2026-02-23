@@ -19,34 +19,43 @@ const Register = () => {
   const navigateTo = useNavigate();
 
   const handleRegistration = async (e) => {
-    e.preventDefault();
-    try {
-      await axios
-        .post(
-          "http://localhost:5000/api/v1/user/patient/register",
-          { firstName, lastName, email, phone, nic, dob, gender, password },
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.message);
-          setIsAuthenticated(true);
-          navigateTo("/");
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setPhone("");
-          setNic("");
-          setDob("");
-          setGender("");
-          setPassword("");
-        });
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
+  e.preventDefault();
+
+  try {
+    const { data } = await api.post(
+      "/api/v1/user/patient/register",
+      {
+        firstName,
+        lastName,
+        email,
+        phone,
+        nic,
+        dob,
+        gender,
+        password,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    toast.success(data.message);
+    setIsAuthenticated(true);
+    navigateTo("/");
+
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhone("");
+    setNic("");
+    setDob("");
+    setGender("");
+    setPassword("");
+
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Registration failed");
+  }
+};
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;

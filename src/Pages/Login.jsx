@@ -14,29 +14,34 @@ const Login = () => {
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await axios
-        .post(
-          "http://localhost:5000/api/v1/user/login",
-          { email, password, confirmPassword, role: "Patient" },
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.message);
-          setIsAuthenticated(true);
-          navigateTo("/");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-        });
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
+  e.preventDefault();
+
+  try {
+    const { data } = await api.post(
+      "/api/v1/user/login",
+      {
+        email,
+        password,
+        confirmPassword,
+        role: "Patient",
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    toast.success(data.message);
+    setIsAuthenticated(true);
+    navigateTo("/");
+
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Login failed");
+  }
+};
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;

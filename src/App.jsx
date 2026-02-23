@@ -17,23 +17,21 @@ const App = () => {
     useContext(Context);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/user/patient/me",
-          {
-            withCredentials: true,
-          }
-        );
-        setIsAuthenticated(true);
-        setUser(response.data.user);
-      } catch (error) {
-        setIsAuthenticated(false);
-        setUser({});
-      }
-    };
-    fetchUser();
-  }, [isAuthenticated]);
+  const fetchUser = async () => {
+    try {
+      const { data } = await api.get("/api/v1/user/patient/me");
+
+      setIsAuthenticated(true);
+      setUser(data.user);
+
+    } catch (error) {
+      setIsAuthenticated(false);
+      setUser({});
+    }
+  };
+
+  fetchUser();
+}, []);
 
   return (
     <>
