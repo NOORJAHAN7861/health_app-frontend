@@ -27,7 +27,7 @@ const MessageForm = () => {
   setEmail("");
   setPhone("");
   setMessage("");
-
+   
 } catch (error) {
   toast.error(error?.response?.data?.message || "Something went wrong");
 }
@@ -80,5 +80,5 @@ const MessageForm = () => {
     </>
   );
 };
-
+};
 export default MessageForm;
