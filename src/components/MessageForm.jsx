@@ -1,7 +1,6 @@
 import { api } from "../utils/api";
 import { toast } from "react-toastify";   
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 
 const MessageForm = () => {
   const [firstName, setFirstName] = useState("");
