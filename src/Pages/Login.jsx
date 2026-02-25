@@ -1,8 +1,10 @@
-import axios from "axios";
-import React, { useContext, useState } from "react";
+import { api } from "../utils/api";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, useNavigate, Navigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+
+
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);

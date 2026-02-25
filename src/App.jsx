@@ -9,7 +9,7 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import { api } from "./utils/api";
 import { Context } from "./main";
 import Login from "./Pages/Login";
 const App = () => {

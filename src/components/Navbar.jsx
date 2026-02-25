@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Login from "../Pages/Login";
-import axios from "axios";
+import { api } from "../utils/api";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 

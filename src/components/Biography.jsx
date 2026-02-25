@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Biography = ({ imageUrl }) => { 
   return (
@@ -27,3 +27,5 @@ const Biography = ({ imageUrl }) => {
 };
 
 export default Biography;
+
+

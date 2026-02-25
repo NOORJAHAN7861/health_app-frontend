@@ -1,7 +1,7 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { api } from "../utils/api";
 import { toast } from "react-toastify";
+import React, { useEffect, useState } from "react";
+
 
 const AppointmentForm = () => {
   const [firstName, setFirstName] = useState("");
