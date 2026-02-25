@@ -67,8 +67,7 @@ const Register = () => {
         <h2>Sign Up</h2>
         <p>Please Sign Up To Continue</p>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa
-          voluptas expedita itaque ex, totam ad quod error?
+          Experience world class healthcare services with compassion and excellence.
         </p>
         <form onSubmit={handleRegistration}>
           <div>
@@ -142,7 +141,7 @@ const Register = () => {
             </Link>
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">Register</button>
+            <button type="submit" onsubmit={handleRegistration}>Register</button>
           </div>
         </form>
       </div>

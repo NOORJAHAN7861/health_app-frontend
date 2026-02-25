@@ -92,7 +92,7 @@ const Login = () => {
             </Link>
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">Login</button>
+            <button type="submit" onSubmit={handleLogin}>Login</button>
           </div>
         </form>
       </div>

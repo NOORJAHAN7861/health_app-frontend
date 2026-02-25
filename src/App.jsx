@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { api } from "./utils/api";
 import { Context } from "./main";
 import Login from "./Pages/Login";
+
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } =
     useContext(Context);
