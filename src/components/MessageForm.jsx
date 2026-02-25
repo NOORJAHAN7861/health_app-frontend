@@ -31,6 +31,7 @@ const MessageForm = () => {
 } catch (error) {
   toast.error(error?.response?.data?.message || "Something went wrong");
 }
+  };
 
   return (
     <>
@@ -80,5 +81,5 @@ const MessageForm = () => {
     </>
   );
 };
-};
+
 export default MessageForm;
