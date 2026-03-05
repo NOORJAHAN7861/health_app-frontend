@@ -5,83 +5,60 @@ import { MdEmail } from "react-icons/md";
 
 const Footer = () => {
   const hours = [
-    {
-      id: 1,
-      day: "Monday",
-      time: "9:00 AM - 11:00 PM",
-    },
-    {
-      id: 2,
-      day: "Tuesday",
-      time: "12:00 PM - 12:00 AM",
-    },
-    {
-      id: 3,
-      day: "Wednesday",
-      time: "10:00 AM - 10:00 PM",
-    },
-    {
-      id: 4,
-      day: "Thursday",
-      time: "9:00 AM - 9:00 PM",
-    },
-    {
-      id: 5,
-      day: "Monday",
-      time: "3:00 PM - 9:00 PM",
-    },
-    {
-      id: 6,
-      day: "Saturday",
-      time: "9:00 AM - 3:00 PM",
-    },
+    { id: 1, day: "Monday", time: "9:00 AM - 11:00 PM" },
+    { id: 2, day: "Tuesday", time: "12:00 PM - 12:00 AM" },
+    { id: 3, day: "Wednesday", time: "10:00 AM - 10:00 PM" },
+    { id: 4, day: "Thursday", time: "9:00 AM - 9:00 PM" },
+    { id: 5, day: "Friday", time: "3:00 PM - 9:00 PM" }, // fixed duplicate "Monday"
+    { id: 6, day: "Saturday", time: "9:00 AM - 3:00 PM" },
   ];
 
   return (
-    <>
-      <footer className={"container"}>
-        <hr />
-        <div className="content">
+    <footer className="container">
+      <hr />
+      <div className="content">
+        <div>
+          <img
+            src="https://www.omegahospitals.com/_next/image?url=https%3A%2F%2Fomegafilesstore.s3.ap-south-1.amazonaws.com%2Fwebsite%2Fspecializations%2Fent.png&w=3840&q=75"
+            alt="logo"
+            className="logo-img"
+          />
+        </div>
+
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/appointment">Appointment</Link></li>
+            <li><Link to="/about">About</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Hours</h4>
+          <ul>
+            {hours.map((element) => (
+              <li key={element.id}>
+                <span>{element.day}</span> - <span>{element.time}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h4>Contact</h4>
           <div>
-            <img src="https://www.omegahospitals.com/_next/image?url=https%3A%2F%2Fomegafilesstore.s3.ap-south-1.amazonaws.com%2Fwebsite%2Fspecializations%2Fent.png&w=3840&q=75" alt="logo" className="logo-img"/>
+            <FaPhone /> <span>999-999-9999</span>
           </div>
           <div>
-            <h4>Quick Links</h4>
-            <ul>
-              <Link to={"/"}>Home</Link>
-              <Link to={"/appointment"}>Appointment</Link>
-              <Link to={"/about"}>About</Link>
-            </ul>
+            <MdEmail /> <span>noorhospita12@gmail.com</span>
           </div>
           <div>
-            <h4>Hours</h4>
-            <ul>
-              {hours.map((element) => (
-                <li key={element.id}>
-                  <span>{element.day}</span>
-                  <span>{element.time}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4>Contact</h4>
-            <div>
-              <faPhone />
-              <span>999-999-9999</span>
-            </div>
-            <div>
-              <MdEmail />
-              <span>noorhospita12@gmail.com</span>
-            </div>
-            <div>
-              <faLocationArrow />
-              <span>kozhikode, Kerala</span>
-            </div>
+            <FaLocationArrow /> <span>Kozhikode, Kerala</span>
           </div>
         </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 };
 

@@ -241,7 +241,9 @@ useEffect(() => {
               style={{ flex: "none", width: "25px" }}
             />
           </div>
-          <button onClick={handleAppointment} style={{ margin: "0 auto" }}>GET APPOINTMENT</button>
+          <button type="submit" style={{ margin: "0 auto" }}>
+            GET APPOINTMENT
+          </button>
         </form>
       </div>
     </>
