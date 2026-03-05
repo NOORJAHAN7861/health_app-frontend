@@ -30,7 +30,7 @@ const Navbar = () => {
   return (
     <>
       <nav className={"container"}>
-        <img src="" alt="Noor hospital" className="logo" />
+        <img src="/logo3.jpg" alt="Noor hospital" className="logo" />
         <div className={show ? "navLinks showmenu" : "navLinks"}>
           <div className="links">
             <Link to={"/"} onClick={() => setShow(!show)}>
