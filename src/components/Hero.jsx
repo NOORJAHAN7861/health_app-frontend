@@ -1,5 +1,5 @@
 import React from "react";
-import ellipseImg from "../assets/hero1.jpg"; // adjust path as needed
+import ellipseImg from "../assets/ellipse.png";
 
 const Hero = ({ title, imageUrl }) => {
   return (
