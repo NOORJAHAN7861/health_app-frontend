@@ -15,6 +15,7 @@ const Register = () => {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState(""); // ✅ NEW STATE FOR ROLE
 
   const navigateTo = useNavigate();
 
@@ -33,6 +34,7 @@ const Register = () => {
           dob,
           gender,
           password,
+          role // ✅ IMPORTANT FIX
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -52,6 +54,7 @@ const Register = () => {
       setDob("");
       setGender("");
       setPassword("");
+      setRole(""); // ✅ RESET ROLE
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
     }
@@ -68,6 +71,7 @@ const Register = () => {
       <p>
         Experience world class healthcare services with compassion and excellence.
       </p>
+
       <form onSubmit={handleRegistration}>
         <div>
           <input
@@ -75,55 +79,72 @@ const Register = () => {
             placeholder="First Name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            required
           />
           <input
             type="text"
             placeholder="Last Name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            required
           />
         </div>
+
         <div>
           <input
-            type="text"
+            type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
-            type="number"
+            type="text"
             placeholder="Mobile Number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            required
           />
         </div>
+
         <div>
           <input
-            type="number"
+            type="text"
             placeholder="NIC"
             value={nic}
             onChange={(e) => setNic(e.target.value)}
+            required
           />
           <input
             type="date"
-            placeholder="Date of Birth"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
+            required
           />
         </div>
+
         <div>
-          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+          <select value={gender} onChange={(e) => setGender(e.target.value)} required>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
+
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
+
+       <select value={role} onChange={(e) => setRole(e.target.value)} required>
+  <option value="Patient">Patient</option>
+  <option value="Doctor">Doctor</option>
+  <option value="Admin">Admin</option>
+   </select>
+
         <div
           style={{
             gap: "10px",
@@ -139,11 +160,12 @@ const Register = () => {
             Login Now
           </Link>
         </div>
+
         <div style={{ justifyContent: "center", alignItems: "center" }}>
           <button type="submit">Register</button>
         </div>
       </form>
-    </div>
+  </div>
   );
 };
 

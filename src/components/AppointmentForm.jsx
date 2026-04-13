@@ -157,7 +157,7 @@ const AppointmentForm = () => {
           </select>
 
           {/* Doctor Select */}
-          <select value={form.doctorId} onChange={handleDoctorSelect}>
+          <select value={form.doc_Id} onChange={handleDoctorSelect}>
             <option value="">Select Doctor</option>
             {doctors
               .filter((doc) => doc.doctorDepartment === form.department)

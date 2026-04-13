@@ -1,5 +1,5 @@
 import React from "react";
-import ellipseImg from "../assets/ellipse.png";
+ 
 
 const Hero = ({ title, imageUrl }) => {
   return (
@@ -17,10 +17,7 @@ const Hero = ({ title, imageUrl }) => {
       </div>
       <div className="banner">
         <img src={imageUrl} alt="hero" className="animated-image" />
-        <span>
-          <img src={ellipseImg} alt="ellipse" className="ellipse" />
-        </span>
-      </div>
+        </div>
     </div>
   );
 };
