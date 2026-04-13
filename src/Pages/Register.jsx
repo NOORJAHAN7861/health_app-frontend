@@ -24,7 +24,7 @@ const Register = () => {
 
     try {
       const { data } = await api.post(
-        "/api/v1/user/register",
+        "/user/patient/register",
         {
           firstName,
           lastName,
