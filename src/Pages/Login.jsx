@@ -18,7 +18,7 @@ const Login = () => {
       const { data } = await api.post("/api/v1/user/login", {
         email,
         password,
-        role: "patient",
+        role: "Patient",
       });
 
       toast.success(data.message);
