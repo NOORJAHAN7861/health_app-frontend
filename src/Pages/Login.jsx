@@ -1,26 +1,24 @@
-import { api } from "../utils/api";
+import React, { useContext, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import { Link, useNavigate, Navigate } from "react-router-dom";
-import React, { useContext, useState } from "react";
-
-
+import { api } from "../utils/api";
 
 const Login = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
-  e.preventDefault();
- try {
+    e.preventDefault();
+
+    try {
       const { data } = await api.post("/api/v1/user/login", {
         email,
         password,
-        role: "Patient",
+        role: "Admin",
       });
 
       toast.success(data.message);
@@ -36,10 +34,9 @@ const Login = () => {
   };
 
   if (isAuthenticated) {
-    return <Navigate to={"/"} />;
+    return <Navigate to="/" />;
   }
 
- 
   return (
     <section className="container form-component">
       <h1 className="form-title">WELCOME TO NOOR HOSPITAL</h1>
