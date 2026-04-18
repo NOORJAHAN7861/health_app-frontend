@@ -18,7 +18,7 @@ const Login = () => {
       const { data } = await api.post("/api/v1/user/login", {
         email,
         password,
-        role: "Admin",
+        role: "patient",
       });
 
       toast.success(data.message);
@@ -40,7 +40,7 @@ const Login = () => {
   return (
     <section className="container form-component">
       <h1 className="form-title">WELCOME TO NOOR HOSPITAL</h1>
-      <p>Only Admins Are Allowed To Access These Resources!</p>
+   
 
       <form onSubmit={handleLogin}>
         <input
