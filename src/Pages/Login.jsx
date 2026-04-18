@@ -23,7 +23,6 @@ const Login = () => {
       {
         email,
         password,
-        confirmPassword,
         role: "Patient",
       },
       {
@@ -37,7 +36,7 @@ const Login = () => {
 
     setEmail("");
     setPassword("");
-    setConfirmPassword("");
+  
 
   } catch (error) {
     toast.error(error.response?.data?.message || "Login failed");
