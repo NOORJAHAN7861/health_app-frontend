@@ -16,81 +16,55 @@ const Login = () => {
 
   const handleLogin = async (e) => {
   e.preventDefault();
-
-  try {
-    const { data } = await api.post(
-      "/api/v1/user/login",
-      {
+ try {
+      const { data } = await api.post("/api/v1/user/login", {
         email,
         password,
         role: "Patient",
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+      });
 
-    toast.success(data.message);
-    setIsAuthenticated(true);
-    navigateTo("/");
+      toast.success(data.message);
+      setIsAuthenticated(true);
+      navigateTo("/");
 
-    setEmail("");
-    setPassword("");
-  
-
-  } catch (error) {
-    toast.error(error.response?.data?.message || "Login failed");
-  }
-};
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Login failed");
+    }
+  };
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;
   }
 
+ 
   return (
-    <>
-      <div className="container form-component login-form">
-        <h2>Sign In</h2>
-        <p>Please Login To Continue</p>
-        <p>
-         world class healthcare services with compassion and excellence.
-        </p>
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-         
-          <div
-            style={{
-              gap: "10px",
-              justifyContent: "flex-end",
-              flexDirection: "row",
-            }}
-          >
-            <p style={{ marginBottom: 0 }}>Not Registered?</p>
-            <Link
-              to={"/register"}
-              style={{ textDecoration: "none", color: "#271776ca" }}
-            >
-              Register Now
-            </Link>
-          </div>
-          <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">Login</button>
+    <section className="container form-component">
+      <h1 className="form-title">WELCOME TO NOOR HOSPITAL</h1>
+      <p>Only Admins Are Allowed To Access These Resources!</p>
 
-          </div>
-        </form>
-      </div>
-    </>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">Login</button>
+      </form>
+    </section>
   );
 };
 
