@@ -13,13 +13,12 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const { data } = await api.get("/api/v1/user/logout", {
-        withCredentials: true,   // ✅ very important
+        withCredentials: true,
       });
 
       toast.success(data.message);
       setIsAuthenticated(false);
-
-      navigate("/");  // ✅ redirect after logout
+      navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Logout failed");
     }
@@ -68,4 +67,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
