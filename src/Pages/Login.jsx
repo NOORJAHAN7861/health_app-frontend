@@ -1,68 +1,69 @@
 import React, { useContext, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { api } from "../utils/api";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import { api } from "../utils/api";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+const Navbar = () => {
+  const [show, setShow] = useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
+  const handleLogout = async () => {
     try {
-      const { data } = await api.post(
-        "/api/v1/user/login",
-        {
-          email,
-          password,
-          role: "Patient",
-        },
-        { withCredentials: true }
-      );
+      const { data } = await api.get("/api/v1/user/logout", {
+        withCredentials: true,
+      });
 
       toast.success(data.message);
-
-      setIsAuthenticated(true);
-      localStorage.setItem("isAuth", "true"); // ⭐ important
-
+      setIsAuthenticated(false);
       navigate("/");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Logout failed");
     }
   };
 
-  if (isAuthenticated) return <Navigate to="/" />;
+  const goToLogin = () => {
+    navigate("/login");
+  };
+
+  const goToRegister = () => {
+    navigate("/register");
+  };
 
   return (
-    <section className="container form-component">
-      <h1 className="form-title">WELCOME TO NOOR HOSPITAL</h1>
+    <nav className="container">
+      <img src="/logo3.jpg" alt="Noor hospital" className="logo" />
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+      <div className={show ? "navLinks showmenu" : "navLinks"}>
+        <div className="links">
+          <Link to="/" onClick={() => setShow(false)}>Home</Link>
+          <Link to="/appointment" onClick={() => setShow(false)}>Appointment</Link>
+          <Link to="/about" onClick={() => setShow(false)}>About Us</Link>
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        {isAuthenticated ? (
+          <button className="logoutBtn btn" onClick={handleLogout}>
+            LOGOUT
+          </button>
+        ) : (
+          <div className="auth-buttons">
+            <button className="loginBtn btn" onClick={goToLogin}>
+              LOGIN
+            </button>
+            <button className="registerBtn btn" onClick={goToRegister}>
+              REGISTER
+            </button>
+          </div>
+        )}
+      </div>
 
-        <button type="submit">Login</button>
-      </form>
-    </section>
+      <div className="hamburger" onClick={() => setShow(!show)}>
+        <GiHamburgerMenu />
+      </div>
+    </nav>
   );
 };
 
-export default Login;
+export default Navbar;
