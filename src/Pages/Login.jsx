@@ -1,69 +1,65 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { api } from "../utils/api";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
+import { api } from "../utils/api";
 
-const Navbar = () => {
-  const [show, setShow] = useState(false);
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
     try {
-      const { data } = await api.get("/api/v1/user/logout", {
-        withCredentials: true,
-      });
+      const { data } = await api.post(
+        "/api/v1/user/login",
+        { email, password, role: "Patient" },
+        { withCredentials: true }
+      );
 
       toast.success(data.message);
-      setIsAuthenticated(false);
-      navigate("/");
+      setIsAuthenticated(true);
+      localStorage.setItem("isAuth", "true"); // persist auth state
+      navigate("/"); // redirect after login
     } catch (error) {
-      toast.error(error.response?.data?.message || "Logout failed");
+      toast.error(error.response?.data?.message || "Login failed");
     }
   };
 
-  const goToLogin = () => {
-    navigate("/login");
-  };
-
-  const goToRegister = () => {
-    navigate("/register");
-  };
+  if (isAuthenticated) return <Navigate to="/" />;
 
   return (
-    <nav className="container">
-      <img src="/logo3.jpg" alt="Noor hospital" className="logo" />
+    <div className="container form-component login-form">
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-      <div className={show ? "navLinks showmenu" : "navLinks"}>
-        <div className="links">
-          <Link to="/" onClick={() => setShow(false)}>Home</Link>
-          <Link to="/appointment" onClick={() => setShow(false)}>Appointment</Link>
-          <Link to="/about" onClick={() => setShow(false)}>About Us</Link>
-        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-        {isAuthenticated ? (
-          <button className="logoutBtn btn" onClick={handleLogout}>
-            LOGOUT
-          </button>
-        ) : (
-          <div className="auth-buttons">
-            <button className="loginBtn btn" onClick={goToLogin}>
-              LOGIN
-            </button>
-            <button className="registerBtn btn" onClick={goToRegister}>
-              REGISTER
-            </button>
-          </div>
-        )}
-      </div>
+        <button type="submit">Login</button>
 
-      <div className="hamburger" onClick={() => setShow(!show)}>
-        <GiHamburgerMenu />
-      </div>
-    </nav>
+        <p>
+          Don’t have an account? <Link to="/register">Sign Up</Link>
+        </p>
+      </form>
+    </div>
   );
 };
 
-export default Navbar;
+export default Login;
+
