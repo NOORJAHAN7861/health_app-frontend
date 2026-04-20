@@ -3,20 +3,13 @@ import { api } from "../utils/api";
 import { toast } from "react-toastify";
 
 const AppointmentForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [nic, setNic] = useState("");
-  const [dob, setDob] = useState("");
-  const [gender, setGender] = useState("");
   const [appointmentDate, setAppointmentDate] = useState("");
   const [department, setDepartment] = useState("");
   const [doctorId, setDoctorId] = useState("");
   const [address, setAddress] = useState("");
   const [hasVisited, setHasVisited] = useState(false);
-
   const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const departmentsArray = [
     "Pediatrics",
@@ -30,85 +23,76 @@ const AppointmentForm = () => {
     "ENT",
   ];
 
-   const [doctors, setDoctors] = useState([]);
-
-
+  // ✅ Fetch doctors
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const {data} = await api.get("/api/v1/user/doctors", {
+        const { data } = await api.get("/api/v1/user/doctors", {
           withCredentials: true,
         });
         setDoctors(data.doctors);
       } catch (error) {
-        console.error(error);
+        toast.error("Failed to load doctors");
       }
     };
     fetchDoctors();
   }, []);
 
+  // ✅ Reset doctor when department changes
+  useEffect(() => {
+    setDoctorId("");
+  }, [department]);
+
   const handleAppointment = async (e) => {
     e.preventDefault();
 
+    if (!appointmentDate || !department || !doctorId || !address) {
+      return toast.error("Please fill all fields");
+    }
+
+    try {
+      setLoading(true);
+
+      const { data } = await api.post(
+        "/api/v1/appointment/post",
+        {
+          appointment_date: appointmentDate,
+          department,
+          doctorId,
+          address,
+          hasVisited,
+        },
+        { withCredentials: true }
+      );
+
+      toast.success(data.message);
+
+      // reset form
+      setAppointmentDate("");
+      setDepartment("");
+      setDoctorId("");
+      setAddress("");
+      setHasVisited(false);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-
-    <>
     <div className="appointment-form-container">
       <h2>Book an Appointment</h2>
 
       <form onSubmit={handleAppointment}>
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          type="text"
-          placeholder="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-
-        <input
-          type="text"
-          placeholder="NIC"
-          value={nic}
-          onChange={(e) => setNic(e.target.value)}
-        />
-
-        <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
-
-        <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-
+        {/* Appointment Date */}
         <input
           type="date"
           value={appointmentDate}
           onChange={(e) => setAppointmentDate(e.target.value)}
         />
 
-        {/* Department Dropdown */}
+        {/* Department */}
         <select value={department} onChange={(e) => setDepartment(e.target.value)}>
           <option value="">Select Department</option>
           {departmentsArray.map((dept, i) => (
@@ -118,7 +102,7 @@ const AppointmentForm = () => {
           ))}
         </select>
 
-        {/* Doctor Dropdown */}
+        {/* Doctor */}
         <select value={doctorId} onChange={(e) => setDoctorId(e.target.value)}>
           <option value="">Select Doctor</option>
           {doctors
@@ -130,12 +114,14 @@ const AppointmentForm = () => {
             ))}
         </select>
 
+        {/* Address */}
         <textarea
           placeholder="Address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
 
+        {/* Visited */}
         <label>
           <input
             type="checkbox"
@@ -145,15 +131,12 @@ const AppointmentForm = () => {
           Visited Before
         </label>
 
-        <button type="submit">Book Appointment</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Booking..." : "Book Appointment"}
+        </button>
       </form>
-   
     </div>
-    </>
   );
- 
 };
-
-
 
 export default AppointmentForm;

@@ -9,38 +9,38 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-  const navigateTo = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const { data } = await api.post("/api/v1/user/login", {
-        email,
-        password,
-        role: "Patient",
-      });
+      const { data } = await api.post(
+        "/api/v1/user/login",
+        {
+          email,
+          password,
+          role: "Patient",
+        },
+        { withCredentials: true }
+      );
 
       toast.success(data.message);
-      setIsAuthenticated(true);
-      navigateTo("/");
 
-      setEmail("");
-      setPassword("");
+      setIsAuthenticated(true);
+      localStorage.setItem("isAuth", "true"); // ⭐ important
+
+      navigate("/");
     } catch (error) {
-      console.log(error);
       toast.error(error.response?.data?.message || "Login failed");
     }
   };
 
-  if (isAuthenticated) {
-    return <Navigate to="/" />;
-  }
+  if (isAuthenticated) return <Navigate to="/" />;
 
   return (
     <section className="container form-component">
       <h1 className="form-title">WELCOME TO NOOR HOSPITAL</h1>
-   
 
       <form onSubmit={handleLogin}>
         <input

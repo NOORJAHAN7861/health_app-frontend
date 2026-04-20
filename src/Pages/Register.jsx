@@ -15,9 +15,8 @@ const Register = () => {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState(""); // ✅ NEW STATE FOR ROLE
 
-  const navigateTo = useNavigate();
+  const navigate = useNavigate();
 
   const handleRegistration = async (e) => {
     e.preventDefault();
@@ -34,138 +33,98 @@ const Register = () => {
           dob,
           gender,
           password,
-          role // ✅ IMPORTANT FIX
+          role: "Patient",
         },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        { withCredentials: true }
       );
 
       toast.success(data.message);
       setIsAuthenticated(true);
-      navigateTo("/");
-
-      // Reset form
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPhone("");
-      setNic("");
-      setDob("");
-      setGender("");
-      setPassword("");
-      setRole(""); // ✅ RESET ROLE
+      navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
     }
   };
 
-  if (isAuthenticated) {
-    return <Navigate to="/" />;
-  }
+  if (isAuthenticated) return <Navigate to="/" />;
 
   return (
     <div className="container form-component register-form">
       <h2>Sign Up</h2>
-      <p>Please Sign Up To Continue</p>
-      <p>
-        Experience world class healthcare services with compassion and excellence.
-      </p>
 
       <form onSubmit={handleRegistration}>
-        <div>
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+        />
 
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Mobile Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
+        />
 
-        <div>
-          <input
-            type="text"
-            placeholder="NIC"
-            value={nic}
-            onChange={(e) => setNic(e.target.value)}
-            required
-          />
-          <input
-            type="date"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-        <div>
-          <select value={gender} onChange={(e) => setGender(e.target.value)} required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+        <input
+          type="text"
+          placeholder="Phone (11 digits)"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+        />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="NIC (13 digits)"
+          value={nic}
+          onChange={(e) => setNic(e.target.value)}
+          required
+        />
 
-       <select value={role} onChange={(e) => setRole(e.target.value)} required>
-  <option value="Patient">Patient</option>
-  <option value="Doctor">Doctor</option>
-  <option value="Admin">Admin</option>
-   </select>
+        <input
+          type="date"
+          value={dob}
+          onChange={(e) => setDob(e.target.value)}
+          required
+        />
 
-        <div
-          style={{
-            gap: "10px",
-            justifyContent: "flex-end",
-            flexDirection: "row",
-          }}
+        <select
+          value={gender}
+          onChange={(e) => setGender(e.target.value)}
+          required
         >
-          <p style={{ marginBottom: 0 }}>Already Registered?</p>
-          <Link
-            to="/signin"
-            style={{ textDecoration: "none", color: "#271776ca" }}
-          >
-            Login Now
-          </Link>
-        </div>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
 
-        <div style={{ justifyContent: "center", alignItems: "center" }}>
-          <button type="submit">Register</button>
-        </div>
+        <input
+          type="password"
+          placeholder="Password (min 8 chars)"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">Register</button>
+
+        <p>
+          Already Registered? <Link to="/signin">Login Now</Link>
+        </p>
       </form>
-  </div>
+    </div>
   );
 };
 
