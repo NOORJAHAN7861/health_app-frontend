@@ -7,40 +7,45 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 const Register = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [nic, setNic] = useState("");
-  const [dob, setDob] = useState("");
-  const [gender, setGender] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({
+    firstName: "", lastName: "", email: "", phone: "",
+    nic: "", dob: "", gender: "", password: "", confirmPassword: ""
+  });
 
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   const handleRegistration = async (e) => {
     e.preventDefault();
+
+    if (form.password !== form.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
 
     try {
       const { data } = await api.post(
         "/api/v1/user/patient/register",
         {
-          firstName,
-          lastName,
-          email,
-          phone,
-          nic,
-          dob,
-          gender,
-          password,
-          role: "Patient",
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          nic: form.nic,
+          dob: form.dob,
+          gender: form.gender,
+          password: form.password,
         },
         { withCredentials: true }
       );
 
       toast.success(data.message);
       setIsAuthenticated(true);
-      navigate("/");
+      localStorage.setItem("isAuth", "true");
+      navigate("/profile"); // ✅ redirect to profile/dashboard
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
     }
@@ -53,75 +58,29 @@ const Register = () => {
       <h2>Sign Up</h2>
 
       <form onSubmit={handleRegistration}>
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
+        <input name="firstName" type="text" placeholder="First Name" value={form.firstName} onChange={handleChange} required />
+        <input name="lastName" type="text" placeholder="Last Name" value={form.lastName} onChange={handleChange} required />
+        <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+        <input name="phone" type="text" placeholder="Phone (11 digits)" value={form.phone} onChange={handleChange} required />
+        <input name="nic" type="text" placeholder="NIC (13 digits)" value={form.nic} onChange={handleChange} required />
+        <input name="dob" type="date" value={form.dob} onChange={handleChange} required />
 
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
+        <div className="gender-options">
+          <label>
+            <input type="radio" name="gender" value="Male" checked={form.gender === "Male"} onChange={handleChange} /> Male
+          </label>
+          <label>
+            <input type="radio" name="gender" value="Female" checked={form.gender === "Female"} onChange={handleChange} /> Female
+          </label>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Phone (11 digits)"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="NIC (13 digits)"
-          value={nic}
-          onChange={(e) => setNic(e.target.value)}
-          required
-        />
-
-        <input
-          type="date"
-          value={dob}
-          onChange={(e) => setDob(e.target.value)}
-          required
-        />
-
-        <select
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          required
-        >
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-
-        <input
-          type="password"
-          placeholder="Password (min 8 chars)"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <input name="password" type="password" placeholder="Password (min 8 chars)" value={form.password} onChange={handleChange} required />
+        <input name="confirmPassword" type="password" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} required />
 
         <button type="submit">Register</button>
 
         <p>
-          Already Registered? <Link to="/signin">Login Now</Link>
+          Already Registered? <Link to="/login">Login Now</Link>
         </p>
       </form>
     </div>
