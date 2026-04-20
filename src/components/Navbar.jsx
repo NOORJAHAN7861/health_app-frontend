@@ -29,6 +29,10 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const goToRegister = () => {
+    navigate("/register");
+  };
+
   return (
     <nav className="container">
       <img src="/logo3.jpg" alt="Noor hospital" className="logo" />
@@ -45,9 +49,14 @@ const Navbar = () => {
             LOGOUT
           </button>
         ) : (
-          <button className="loginBtn btn" onClick={goToLogin}>
-            LOGIN
-          </button>
+          <div className="auth-buttons">
+            <button className="loginBtn btn" onClick={goToLogin}>
+              LOGIN
+            </button>
+            <button className="registerBtn btn" onClick={goToRegister}>
+              REGISTER
+            </button>
+          </div>
         )}
       </div>
 
@@ -59,3 +68,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
